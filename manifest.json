@@ -3,6 +3,18 @@
   "name": "JSM UI Fixer",
   "version": "0.1.0",
   "description": "Apply UI fixes to JSM for a better experience. For example, collapsing email reply chains in comments to keep tickets clean and readable.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "jsm-ui-fixer@jsmuifixer.extension",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    },
+    "gecko_android": {
+      "strict_min_version": "142.0"
+    }
+  },
   "permissions": [
     "storage",
     "tabs"

@@ -1,6 +1,6 @@
 # JSM UI Fixer
 
-**JSM UI Fixer** is a lightweight Chromium-based extension designed to clean up and declutter the Jira Service Management (JSM) ticket interface. It automatically detects and collapses long, messy email reply chains (often created when users reply to JSM tickets via email, appending standard and previous conversations) in comments and ticket descriptions.
+**JSM UI Fixer** is a lightweight Firefox extension designed to clean up and declutter the Jira Service Management (JSM) ticket interface. It automatically detects and collapses long, messy email reply chains (often created when users reply to JSM tickets via email, appending standard and previous conversations) in comments and ticket descriptions.
 
 Via a toggle, you can read tickets without combing through paragraphs of repeated historical email threads, while preserving the ability to expand and inspect the original headers and quotes at any time.
 
@@ -17,9 +17,22 @@ When agents look at tickets in Jira Service Management, they can be overwhelmed 
 
 ## Installation
 
+### Temporary install (for development/testing)
+
 1.  Clone this repository locally.
-2.  Open Google Chrome and navigate to `chrome://extensions/`.
-3.  Enable **Developer mode** (toggle in the top-right corner).
-4.  Click **Load unpacked** in the top-left corner.
-5.  Select the directory containing this project (the one containing `manifest.json`).
-6.  Open any Jira Service Management ticket and watch long reply chains disappear!
+2.  Open Firefox and navigate to `about:debugging#/runtime/this-firefox`.
+3.  Click **Load Temporary Add-on**.
+4.  Select the `manifest.json` file in this project's directory.
+5.  Open any Jira Service Management ticket and watch long reply chains disappear!
+
+Note: temporary add-ons are removed when Firefox restarts, so you'll need to reload it each session.
+
+### Permanent install
+
+Firefox requires extensions to be signed before they can be installed permanently. To get a signed build:
+
+1.  Package the directory (excluding `.git`) into a `.zip`.
+2.  Submit it to [addons.mozilla.org](https://addons.mozilla.org/developers/) for signing (self-distribution is fine — it doesn't need to be listed publicly).
+3.  Install the signed `.xpi` Mozilla returns.
+
+If you're publishing under your own account, update the `browser_specific_settings.gecko.id` in [manifest.json](manifest.json) to a value unique to you first.
