@@ -29,10 +29,7 @@ Note: temporary add-ons are removed when Firefox restarts, so you'll need to rel
 
 ### Permanent install
 
-Firefox requires extensions to be signed before they can be installed permanently. To get a signed build:
+1. Download the [latest release](https://github.com/agnesnutter/jsmUiFixerFF/releases/latest) and download the .xpi file.
+2. Follow the prompts to install with the desired permissions.
 
-1.  Package the directory (excluding `.git`) into a `.zip`.
-2.  Submit it to [addons.mozilla.org](https://addons.mozilla.org/developers/) for signing (self-distribution is fine — it doesn't need to be listed publicly).
-3.  Install the signed `.xpi` Mozilla returns.
-
-If you're publishing under your own account, update the `browser_specific_settings.gecko.id` in [manifest.json](manifest.json) to a value unique to you first.
+Note: The extension will not auto-update. If there are updates, you will need to re-download from the above link.
