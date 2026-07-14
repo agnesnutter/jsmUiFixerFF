@@ -39,7 +39,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
  * Checks if the text matches standard email reply headers (Gmail, Outlook, Apple Mail, etc.).
  */
 function isEmailReplyHeader(text) {
-  if (!text) return false;
+  if (!text || text.length > 1000) return false;
   text = text.trim();
   // Strip common leading email quote characters (e.g. >, |, spaces)
   const cleaned = text.replace(/^[>\s|]+/, '').trim();
@@ -151,7 +151,7 @@ function getCommentContainer(el) {
   ];
 
   for (const selector of selectors) {
-    const container = el.closest(selector);
+    const container = el.parentElement ? el.parentElement.closest(selector) : null;
     if (container) return container;
   }
 
@@ -175,6 +175,14 @@ function processHeaderBlock(headerBlock) {
   if (headerBlock.hasAttribute('data-jsm-fixer-processed')) {
     return;
   }
+
+  // Skip if we are inside a contenteditable editor to avoid breaking edit fields
+  if (headerBlock.closest('[contenteditable="true"]') || 
+      headerBlock.closest('.ak-editor-area') || 
+      headerBlock.closest('.ak-editor-content-area')) {
+    return;
+  }
+
   // Mark it immediately so we do not attempt double processing
   headerBlock.setAttribute('data-jsm-fixer-processed', 'true');
 
@@ -207,7 +215,19 @@ function processHeaderBlock(headerBlock) {
   headerWrapper.ancestors = ancestors;
 
   // Insert the toggle widget before the original header element
+  // Pause observer during DOM modifications to prevent mutation observer from firing on our own additions
+  if (observer) {
+    observer.disconnect();
+  }
+
   headerBlock.parentNode.insertBefore(headerWrapper, headerBlock);
+
+  if (observer && isEnabled) {
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
 
   // Add the collapsed parent classes to ancestors on next animation frame
   requestAnimationFrame(() => {
@@ -252,21 +272,22 @@ function startScanning() {
 
   // Set up observer to process comments loaded dynamically
   observer = new MutationObserver((mutations) => {
-    let shouldScan = false;
     for (const mutation of mutations) {
       if (mutation.addedNodes.length > 0) {
         mutation.addedNodes.forEach(node => {
+          let targetNode = null;
           if (node.nodeType === Node.ELEMENT_NODE) {
-            shouldScan = true;
-            // Target search inside the added element for efficiency
-            const matches = findHeaderBlocks(node);
+            targetNode = node;
+          } else if (node.nodeType === Node.TEXT_NODE && node.parentElement) {
+            targetNode = node.parentElement;
+          }
+
+          if (targetNode) {
+            const matches = findHeaderBlocks(targetNode);
             matches.forEach(processHeaderBlock);
           }
         });
       }
-    }
-    if (shouldScan) {
-      scanPage();
     }
   });
 
