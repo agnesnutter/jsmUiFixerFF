@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSM UI Fixer Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Main Card -->
+    <main class="main-content">
+      <div class="settings-card">
+        <div class="control-row">
+          <div class="control-label">
+            <span class="label-primary">Collapse Reply Trails</span>
+            <span class="label-secondary">Automatically hide quoted email comments</span>
+          </div>
+          <div class="switch-container">
+            <label class="switch">
+              <input type="checkbox" id="enableToggle" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Card -->
+      <div class="stats-card" id="statsCard">
+        <div class="stat-num" id="collapsedCount">0</div>
+        <div class="stat-label">Comment reply threads collapsed on this page</div>
+      </div>
+      
+      <!-- Fallback when not on Jira -->
+      <div class="stats-card disabled" id="nonJiraCard" style="display: none;">
+        <div class="stat-label">Navigate to a Jira ticket page to see active stats.</div>
+      </div>
+    </main>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

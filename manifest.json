@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "JSM UI Fixer",
+  "version": "0.1.0",
+  "description": "Apply UI fixes to JSM for a better experience. For example, collapsing email reply chains in comments to keep tickets clean and readable.",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://*.atlassian.net/*",
+    "https://*.jira.com/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.atlassian.net/*",
+        "https://*.jira.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_end"
+    }
+  ]
+}
